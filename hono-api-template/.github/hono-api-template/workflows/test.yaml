@@ -13,7 +13,7 @@ jobs:
       - uses: 'actions/checkout@v4'
       - uses: 'actions/setup-node@v4'
         with:
-          node-version: 22
+          node-version-file: 'ts/package.json'
       - run: npm ci
       - run: npm run ci
       - run: npm test
@@ -35,3 +35,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           context: 'ts'
           file: 'ts/Lambda.Dockerfile'
+
+  renovate-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    needs:
+      - test
+      - build
+    # See https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#needs-context for result values
+    if: ${{ cancelled() || failure() }}
+    steps:
+      - run: 'false'
