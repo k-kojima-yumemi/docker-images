@@ -22,7 +22,7 @@ WORKDIR /app
 RUN npm ci --omit=dev
 
 # Runtime stage
-FROM gcr.io/distroless/nodejs22-debian12 AS runtime
+FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
 # Set working directory
 WORKDIR /app
 # Copy AWS Lambda Web Adapter
@@ -39,6 +39,5 @@ ENV PORT=8080
 ENV LOG_LEVEL=info
 # Expose port (for documentation purposes)
 EXPOSE 8080
-USER nonroot
 # Start the server
 CMD ["dist/index.cjs"]
