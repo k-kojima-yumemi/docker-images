@@ -19,7 +19,7 @@ FROM base AS deps
 # Set working directory
 WORKDIR /app
 # Install prod dependencies
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Runtime stage
 FROM gcr.io/distroless/nodejs22-debian12 AS runtime
