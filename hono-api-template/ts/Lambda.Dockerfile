@@ -22,7 +22,7 @@ WORKDIR /app
 RUN npm ci --omit=dev
 
 # Runtime stage
-FROM gcr.io/distroless/nodejs22-debian12:nonroot AS runtime
+FROM gcr.io/distroless/nodejs22-debian12 AS runtime
 # Set working directory
 WORKDIR /app
 # Copy AWS Lambda Web Adapter
