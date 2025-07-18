@@ -14,4 +14,17 @@ describe("HealthCheck Route", () => {
         const data = await res.json();
         expect(data).toEqual({ status: "ok" });
     });
+
+    it("should return status ok for /health endpoint", async () => {
+        // Create a mock request to the health endpoint
+        const res = await HealthCheckApp.request("/health");
+
+        // Check status code
+        expect(res.status).toBe(200);
+        expect(res.headers.get("content-type")).include("application/json");
+
+        // Check response body
+        const data = await res.json();
+        expect(data).toEqual({ status: "ok" });
+    });
 });

@@ -21,6 +21,7 @@ describe("App", () => {
         const app = create();
         const paths = app.routes.map((route) => route.path);
         expect(paths).toContain("/health-check");
+        expect(paths).toContain("/health");
     });
     it("open api contains routes", async () => {
         const app = create();
@@ -29,5 +30,6 @@ describe("App", () => {
         const data = await response.json();
         const paths = data.paths;
         expect(paths).toHaveProperty("/health-check");
+        expect(paths).toHaveProperty("/health");
     });
 });

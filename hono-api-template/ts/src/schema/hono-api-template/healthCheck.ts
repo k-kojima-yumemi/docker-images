@@ -20,3 +20,18 @@ export const healthCheckRoute = createRoute({
         },
     },
 });
+
+export const healthRoute = createRoute({
+    method: "get",
+    path: "health",
+    responses: {
+        200: {
+            content: {
+                "application/json": {
+                    schema: HealthCheckSchema,
+                },
+            },
+            description: "Health Check",
+        },
+    },
+});
