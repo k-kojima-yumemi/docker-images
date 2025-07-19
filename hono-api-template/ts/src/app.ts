@@ -1,6 +1,7 @@
 import { OpenAPIHono } from "@hono/zod-openapi";
 import { createMiddleware } from "hono/factory";
 import type { EnvConfig } from "./envConfig";
+import { loggerMiddleware } from "./middleware/logger";
 import { renderer } from "./middleware/renderer";
 import { defineOpenApiDocRoutes } from "./route/doc";
 import { HealthCheckApp } from "./route/healthCheck";
@@ -14,7 +15,7 @@ export type HonoContext = { Variables: HonoEnv };
 
 export function createApp(config: EnvConfig) {
     const app = new OpenAPIHono<HonoContext>();
-    app.use(renderer);
+    app.use(loggerMiddleware, renderer);
     app.use(
         createMiddleware(async (c, next) => {
             c.set("config", config);
