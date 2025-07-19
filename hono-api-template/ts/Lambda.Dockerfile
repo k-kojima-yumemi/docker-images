@@ -28,8 +28,8 @@ WORKDIR /app
 # Copy AWS Lambda Web Adapter
 COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:0.9.1 --chown=nonroot:nonroot /lambda-adapter /opt/extensions/lambda-adapter
 # Copy package.json and dependencies for runtime
-COPY --from=deps --chown=nonroot:nonroot /app/package.json /app/package.json
-COPY --from=deps --chown=nonroot:nonroot /app/node_modules /app/node_modules
+COPY --chown=nonroot:nonroot package.json /app/package.json
+ # COPY --from=deps --chown=nonroot:nonroot /app/node_modules /app/node_modules
 # Copy built application
 COPY --from=builder --chown=nonroot:nonroot /app/dist /app/dist
 
