@@ -11,11 +11,14 @@ app.get("*", (c) => {
   const contentType = RESPONSE_CONTENT_TYPE ?? "text/plain";
   console.log(
     JSON.stringify({
+      level: "info",
+      message: `${c.req.method} ${c.req.url} - ${statusCode} ${contentType}`,
       path: c.req.path,
       method: c.req.method,
       status: statusCode,
       contentType,
       content,
+      requestHeader: c.req.header(),
     }),
   );
 
