@@ -5,6 +5,7 @@
     ":prConcurrentLimit10",
     ":prHourlyLimitNone",
     ":timezone(Asia/hono-api-template/Tokyo)",
+    "customManagers:biomeVersions",
   ],
   "packageRules": [
     {
