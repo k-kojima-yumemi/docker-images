@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import app from "./index.mjs";
 
 describe("Hono Application Tests", () => {
@@ -90,13 +90,12 @@ describe("Hono Application Tests", () => {
     expect(await res.text()).toBe("<h1>Hello HTML</h1>");
   });
 
-  it("should return same response for different paths", async () => {
-    const paths = ["/", "/test", "/api/v1", "/any/path"];
-
-    for (const path of paths) {
+  it.each([["/"], ["/test"], ["/api/v1"], ["/any/path"]])(
+    "should return same response for path: %s",
+    async (path) => {
       const res = await app.request(`http://localhost${path}`);
       expect(res.status).toBe(200);
       expect(await res.text()).toBe("Hello World");
-    }
-  });
+    },
+  );
 });
