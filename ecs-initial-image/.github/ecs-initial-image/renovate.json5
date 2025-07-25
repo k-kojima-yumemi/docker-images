@@ -5,6 +5,7 @@
     ":prConcurrentLimit10",
     ":prHourlyLimitNone",
     ":timezone(Asia/ecs-initial-image/Tokyo)",
+    "customManagers:biomeVersions",
   ],
   "packageRules": [
     {
