@@ -1,4 +1,3 @@
-import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { env } from "hono/adapter";
 
@@ -11,17 +10,9 @@ app.get("*", (c) => {
   const statusCode = RESPONSE_STATUS ? Number(RESPONSE_STATUS) : 200;
   const contentType = RESPONSE_CONTENT_TYPE ?? "text/plain";
 
-  c.header("Content-Type", contentType);
-
-  return c.text(content, statusCode);
+  return c.body(content, statusCode, {
+    "Content-Type": contentType,
+  });
 });
 
-serve(
-  {
-    fetch: app.fetch,
-    port: Number(process.env.PORT ?? 3000),
-  },
-  (info) => {
-    console.log(`Server is running on ${info.port}`);
-  },
-);
+export default app;
