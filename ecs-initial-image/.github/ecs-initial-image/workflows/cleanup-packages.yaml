@@ -18,3 +18,8 @@ jobs:
           package-type: 'container'
           min-versions-to-keep: 1
           delete-only-untagged-versions: true
+      - name: Validate architectures exist without pulling
+        run: |
+          manifest=$(docker manifest inspect ghcr.io/k-kojima-yumemi/ecs-initial-image:latest)
+          echo "$manifest" | jq -r '.manifests[].platform | select(.os=="linux") | "\(.os)/\(.architecture)"' | grep -E "(linux/amd64|linux/arm64)" | wc -l | grep -q "2"
+
