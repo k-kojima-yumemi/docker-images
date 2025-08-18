@@ -8,7 +8,6 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    if: false
     permissions:
       packages: write
     steps:
@@ -17,7 +16,7 @@ jobs:
         with:
           package-name: 'ecs-initial-image'
           package-type: 'container'
-          min-versions-to-keep: 1
+          min-versions-to-keep: 10
           delete-only-untagged-versions: true
       - name: Validate image tag exists
         run: docker manifest inspect ghcr.io/k-kojima-yumemi/ecs-initial-image:latest
