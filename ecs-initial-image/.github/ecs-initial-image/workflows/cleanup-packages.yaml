@@ -8,6 +8,7 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    if: false
     permissions:
       packages: write
     steps:
