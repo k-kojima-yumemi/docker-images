@@ -67,13 +67,15 @@
         "useShorthandFunctionType": "error"
       },
       "nursery": {
-        "useSortedClasses": "error",
-        "noAwaitInLoop": "error"
+        "useSortedClasses": "error"
       },
       "complexity": {
         "noCommaOperator": "error",
         "useNumericLiterals": "error",
         "noArguments": "error"
+      },
+      "performance": {
+        "noAwaitInLoops": "error"
       }
     }
   },
