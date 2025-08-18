@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.0/schema.json",
   "files": {
     "includes": [
       "**/*.ts",
@@ -68,13 +68,15 @@
         "useShorthandFunctionType": "error"
       },
       "nursery": {
-        "useSortedClasses": "error",
-        "noAwaitInLoop": "error"
+        "useSortedClasses": "error"
       },
       "complexity": {
         "noCommaOperator": "error",
         "useNumericLiterals": "error",
         "noArguments": "error"
+      },
+      "performance": {
+        "noAwaitInLoops": "error"
       }
     }
   },
