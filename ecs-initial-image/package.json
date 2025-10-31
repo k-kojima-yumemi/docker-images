@@ -14,7 +14,7 @@
     "hono": "^4.7.9"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.0",
+    "@biomejs/biome": "2.3.2",
     "vitest": "^4.0.0"
   },
   "volta": {
