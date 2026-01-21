@@ -1,6 +1,6 @@
 FROM ubuntu:24.04 AS cli
 
-RUN apt-get update && apt-get install -y curl unzip
+RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certificates unzip
 
 WORKDIR /root
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "aws_cli2.zip"
