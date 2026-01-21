@@ -27,12 +27,16 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashi
 apt-get update && apt-get install -y terraform
 rm -rf /var/lib/apt/lists/*
 mkdir -p /terraform-cache
+terraform version
 EOF
+
+ENV TF_PLUGIN_CACHE_DIR=/terraform-cache
 
 # Install AWS CLI
 COPY --from=cli /usr/local/aws-cli /usr/local/aws-cli
 COPY --from=cli /usr/local/aws-cli-bin /usr/local/aws-cli-bin
 ENV PATH=/usr/local/aws-cli-bin:$PATH
+RUN aws --version
 
 LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
 LABEL org.opencontainers.image.description="An image with Terraform and AWS CLI"
