@@ -13,6 +13,8 @@ RUN <<EOF
 apt-get update
 apt-get install -y --no-install-recommends \
   curl \
+  ca-certificates \
+  openssl \
   unzip \
   lsb-release \
   gnupg \
