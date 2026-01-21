@@ -19,7 +19,10 @@ apt-get install -y --no-install-recommends \
   lsb-release \
   gnupg \
   git \
-  jq
+  jq \
+  zsh \
+  mandoc \
+  nano
 rm -rf /var/lib/apt/lists/*
 EOF
 
