@@ -8,6 +8,10 @@ on:
       - '.github/workflows/ubuntu24.04-terraform-aws.yaml'
       - 'ubuntu24.04-terraform-aws/**'
 
+permissions:
+  contents: read
+  packages: write
+
 env:
   DOCKER_BUILD_SUMMARY: false
   DOCKER_BUILD_RECORD_UPLOAD: false
