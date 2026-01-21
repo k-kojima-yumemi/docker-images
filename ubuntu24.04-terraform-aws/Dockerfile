@@ -14,6 +14,7 @@ apt-get update
 apt-get install -y --no-install-recommends \
   curl \
   unzip \
+  software-properties-common \
   gnupg \
   git \
   jq
