@@ -1,6 +1,8 @@
+name: 'ubuntu24.04-terraform-aws'
+
 on:
   push:
-    branches: 
+    branches:
       - main
     paths: 
       - '.github/workflows/ubuntu24.04-terraform-aws.yaml'

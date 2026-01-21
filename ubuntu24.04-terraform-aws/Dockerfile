@@ -15,8 +15,6 @@ apt-get install -y --no-install-recommends \
   curl \
   unzip \
   gnupg \
-  software-properties-common \
-  make \
   git \
   jq
 rm -rf /var/lib/apt/lists/*
