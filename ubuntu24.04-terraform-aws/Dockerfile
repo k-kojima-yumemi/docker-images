@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y curl unzip
 
 WORKDIR /root
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "aws_cli2.zip"
-RUN unzip "aws_cli2.zip"
+RUN unzip "aws_cli2.zip" >/dev/null && echo 'Unziped aws_cli2.zip'
 RUN ./aws/install --bin-dir /usr/local/aws-cli-bin --install-dir /usr/local/aws-cli
 
 FROM ubuntu:24.04
