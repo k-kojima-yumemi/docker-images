@@ -63,6 +63,7 @@ jobs:
   renovate-check:
     runs-on: ubuntu-latest
     timeout-minutes: 1
+    permissions: {}
     needs:
       - test
       - build
