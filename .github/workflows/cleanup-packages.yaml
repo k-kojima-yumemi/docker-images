@@ -25,5 +25,5 @@ jobs:
           min-versions-to-keep: 10
           delete-only-untagged-versions: true
       - name: Validate image tag exists
-        run: docker manifest inspect ghcr.io/k-kojima-yumemi/${{ matrix.package-name }}:latest
+        run: docker manifest inspect ghcr.io/${{ github.repository_owner }}/${{ matrix.package-name }}:latest
 
