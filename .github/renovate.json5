@@ -5,7 +5,6 @@
     ":prConcurrentLimit10",
     ":prHourlyLimitNone",
     ":timezone(Asia/Tokyo)",
-    "customManagers:biomeVersions",
   ],
   "packageRules": [
     {
