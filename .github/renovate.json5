@@ -4,7 +4,7 @@
     "config:recommended",
     ":prConcurrentLimit10",
     ":prHourlyLimitNone",
-    ":timezone(Asia/ecs-initial-image/Tokyo)",
+    ":timezone(Asia/Tokyo)",
     "customManagers:biomeVersions",
   ],
   "packageRules": [
