@@ -28,6 +28,6 @@ ENV PORT=8080
 ENV LOG_LEVEL=info
 # Expose port (for documentation purposes)
 EXPOSE 8080
-LABEL org.opencontainers.image.source=https://github.com/k-kojima-yumemi/ecs-initial-image
+LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
 # Start the server
 CMD ["dist/main.mjs"]

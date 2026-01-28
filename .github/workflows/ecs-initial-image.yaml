@@ -1,19 +1,36 @@
-name: Test
+name: ecs-initial-image
 on:
   push:
     branches:
       - 'main'
+    paths: 
+      - '.github/workflows/ecs-initial-image.yaml'
+      - 'ecs-initial-image/**'
   pull_request:
+    paths: 
+      - '.github/workflows/ecs-initial-image.yaml'
+      - 'ecs-initial-image/**'
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  DOCKER_BUILD_SUMMARY: false
+  DOCKER_BUILD_RECORD_UPLOAD: false
 
 jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: 'ecs-initial-image'
     steps:
       - uses: 'actions/checkout@v6'
       - uses: 'actions/setup-node@v6'
         with:
-          node-version-file: 'package.json'
+          node-version-file: 'ecs-initial-image/package.json'
       - run: npm ci
       - run: npm run ci
       - run: npm test
@@ -42,6 +59,8 @@ jobs:
           push: ${{ github.event_name == 'push' }}
           tags: ghcr.io/k-kojima-yumemi/ecs-initial-image:latest
           platforms: linux/amd64,linux/arm64
+          context: 'ecs-initial-image'
+          file: 'ecs-initial-image/Dockerfile'
 
   renovate-check:
     runs-on: ubuntu-latest
