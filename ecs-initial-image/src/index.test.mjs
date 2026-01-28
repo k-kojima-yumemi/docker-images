@@ -90,12 +90,14 @@ describe("Hono Application Tests", () => {
     expect(await res.text()).toBe("<h1>Hello HTML</h1>");
   });
 
-  it.each([["/"], ["/test"], ["/api/v1"], ["/any/path"]])(
-    "should return same response for path: %s",
-    async (path) => {
-      const res = await app.request(`http://localhost${path}`);
-      expect(res.status).toBe(200);
-      expect(await res.text()).toBe("Hello World");
-    },
-  );
+  it.each([
+    ["/"],
+    ["/test"],
+    ["/api/v1"],
+    ["/any/path"],
+  ])("should return same response for path: %s", async (path) => {
+    const res = await app.request(`http://localhost${path}`);
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("Hello World");
+  });
 });
