@@ -8,7 +8,8 @@ FROM base AS deps
 # Set working directory
 WORKDIR /app
 # Install prod dependencies
-RUN npm ci --omit=dev
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
 
 # Runtime stage
 FROM gcr.io/distroless/nodejs24-debian12:nonroot AS runtime
