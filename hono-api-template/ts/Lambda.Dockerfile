@@ -1,5 +1,5 @@
 # Base stage for build and dependencies
-FROM public.ecr.aws/docker/library/node:22-slim AS base
+FROM public.ecr.aws/docker/library/node:24-slim AS base
 # Copy package files
 COPY package*.json tsconfig.json /app/
 
