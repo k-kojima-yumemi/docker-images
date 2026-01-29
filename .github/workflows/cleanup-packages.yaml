@@ -6,16 +6,34 @@ on:
   workflow_dispatch:
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      package-names: ${{ steps.set-matrix.outputs.package-names }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Find Dockerfiles and set matrix
+        id: set-matrix
+        run: |
+          shopt -s globstar nullglob
+          PACKAGE_NAMES=$(printf '%s\n' **/Dockerfile **/*.Dockerfile | \
+            cut -d'/' -f1 | \
+            sort -u | \
+            jq -R -s -c 'split("\n") | map(select(. != ""))')
+          echo "package-names=$PACKAGE_NAMES" >> $GITHUB_OUTPUT
+          echo "Found package names: $PACKAGE_NAMES"
+
   cleanup:
+    needs: prepare
     runs-on: ubuntu-latest
     permissions:
       packages: write
     strategy:
       matrix:
-        package-name:
-          - ecs-initial-image
-          - hono-api-template
-          - ubuntu24.04-terraform-aws
+        package-name: ${{ fromJSON(needs.prepare.outputs.package-names) }}
     steps:
       - name: Delete old package versions
         uses: actions/delete-package-versions@v5
