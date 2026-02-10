@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+const DEFAULT_DB_PORT = 5432;
+
 const DbConnectionUrlSchema = z.object({
     type: z.literal("url"),
     connectionString: z.string(),
@@ -7,10 +9,10 @@ const DbConnectionUrlSchema = z.object({
 const DbConnectionParamsSchema = z.object({
     type: z.literal("params"),
     host: z.string(),
-    port: z.coerce.number().default(5432),
+    port: z.coerce.number().default(DEFAULT_DB_PORT),
     database: z.string(),
     user: z.string(),
-    password: z.string(),
+    password: z.string().optional(),
 });
 const DbConnectionSchema = z.discriminatedUnion("type", [
     DbConnectionUrlSchema,
@@ -35,16 +37,15 @@ function parseDbConnection(): DbConnection | undefined {
     const user = process.env.DB_USER ?? "";
     const database = process.env.DB_NAME ?? process.env.DB_DATABASE ?? "";
     if (!database) return undefined;
-    const password = process.env.DB_PASSWORD ?? "";
     const portRaw = process.env.DB_PORT;
-    const port = portRaw ? Number(portRaw) : 5432;
+    const port = portRaw ? Number(portRaw) : DEFAULT_DB_PORT;
     return {
         type: "params",
         host,
-        port: Number.isNaN(port) ? 5432 : port,
+        port: Number.isNaN(port) ? DEFAULT_DB_PORT : port,
         database,
         user,
-        password,
+        password: process.env.DB_PASSWORD,
     };
 }
 
