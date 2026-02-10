@@ -21,7 +21,7 @@ dbHealthCheckApp.get("/db-health-check", async (c) => {
                   port: config.dbConnection.port,
                   database: config.dbConnection.database,
                   user: config.dbConnection.user,
-                  password: config.dbConnection.password,
+                  password: String(config.dbConnection.password ?? ""),
               });
     try {
         const result = await pool.query<{ now: Date }>("SELECT NOW() AS now");
