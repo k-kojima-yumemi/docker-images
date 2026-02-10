@@ -11,18 +11,18 @@ dbHealthCheckApp.get("/db-health-check", async (c) => {
         );
         return c.json({ status: "ng" } as const, 503);
     }
-    const pool =
+    const connectionConfig =
         config.dbConnection.type === "url"
-            ? new Pool({
-                  connectionString: config.dbConnection.connectionString,
-              })
-            : new Pool({
+            ? { connectionString: config.dbConnection.connectionString }
+            : {
                   host: config.dbConnection.host,
                   port: config.dbConnection.port,
                   database: config.dbConnection.database,
                   user: config.dbConnection.user,
                   password: config.dbConnection.password,
-              });
+              };
+    console.log("connectionConfig:", connectionConfig);
+    const pool = new Pool(connectionConfig);
     try {
         const result = await pool.query<{ now: Date }>("SELECT NOW() AS now");
         const row = result.rows[0];

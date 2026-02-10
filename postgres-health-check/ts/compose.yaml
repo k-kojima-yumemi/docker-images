@@ -15,7 +15,7 @@ services:
       DB_PORT: "5432"
       DB_NAME: "app"
       DB_USER: "postgres"
-      DB_PASSWORD: "password"
+      # DB_PASSWORD: "password"
     depends_on:
       database:
         condition: service_healthy
@@ -25,8 +25,9 @@ services:
     image: public.ecr.aws/docker/library/postgres:18
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "password"
+      # POSTGRES_PASSWORD: "password"
       POSTGRES_DB: "app"
+      POSTGRES_HOST_AUTH_METHOD: "trust"
     ports:
       - "5432:5432"
     healthcheck:
