@@ -37,11 +37,11 @@ describe("db-health-check", () => {
             port: 3000,
             dbConnection: {
                 type: "params",
-                host: "127.0.0.1",
+                host: "never-found-host.internal",
                 port: 1,
                 database: "postgres",
                 user: "postgres",
-                password: "",
+                password: "ROOT_PASSWORD",
             },
         };
         const app = createApp(configWithInvalidHost);
