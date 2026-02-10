@@ -7,6 +7,8 @@ on:
     paths: 
       - '.github/workflows/ubuntu24.04-terraform-aws.yaml'
       - 'ubuntu24.04-terraform-aws/**'
+  schedule:
+    - cron: '22 16 */10 * *'
 
 permissions:
   contents: read
