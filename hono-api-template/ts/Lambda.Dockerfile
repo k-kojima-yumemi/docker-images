@@ -41,6 +41,7 @@ ENV PORT=8080
 ENV LOG_LEVEL=info
 # Expose port (for documentation purposes)
 EXPOSE 8080
-LABEL org.opencontainers.image.source=https://github.com/k-kojima-yumemi/hono-api-template
+LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
+LABEL org.opencontainers.image.description="An image with Hono API template"
 # Start the server
 CMD ["dist/index.cjs"]

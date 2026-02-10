@@ -23,3 +23,6 @@ ENV NODE_ENV=production
 ENV PORT=8080
 EXPOSE 8080
 CMD ["dist/index.cjs"]
+
+LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
+LABEL org.opencontainers.image.description="An image to check connection to PostgreSQL"
