@@ -19,6 +19,7 @@ services:
     depends_on:
       database:
         condition: service_healthy
+    command: sh -c "npm ci && npm run dev"
 
   database:
     image: public.ecr.aws/docker/library/postgres:18
