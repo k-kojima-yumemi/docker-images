@@ -24,24 +24,14 @@ jobs:
     defaults:
       run:
         working-directory: 'postgres-health-check/ts'
-    env:
-      DB_HOST: localhost
-      DB_PORT: "5432"
-      DB_NAME: postgres
-      DB_USER: postgres
     steps:
       - uses: 'actions/checkout@v6'
-      - uses: 'actions/setup-node@v6'
-        with:
-          node-version-file: 'postgres-health-check/ts/package.json'
-      - name: Start PostgreSQL
-        run: |
-          sudo systemctl start postgresql.service
-          pg_isready -U postgres -d postgres
-      - run: npm ci
-      - run: npm run ci
-      - run: npm run build
-      - run: npm test
+      - run: docker compose up -d database
+      - run: docker compose run --rm app npm ci
+      - run: docker compose run --rm app npm run ci
+      - run: docker compose run --rm app npm run build
+      - name: Run test
+        run: docker compose run --rm app npm test
 
   build:
     runs-on: ubuntu-latest
