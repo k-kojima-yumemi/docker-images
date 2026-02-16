@@ -34,6 +34,7 @@ jobs:
     strategy:
       matrix:
         package-name: ${{ fromJSON(needs.prepare.outputs.package-names) }}
+      fail-fast: false
     steps:
       - name: Delete old package versions
         uses: actions/delete-package-versions@v5
