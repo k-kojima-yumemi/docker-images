@@ -32,20 +32,25 @@ function parseDbConnection(): DbConnection | undefined {
     if (databaseUrl && databaseUrl.length > 0) {
         return { type: "url", connectionString: databaseUrl };
     }
-    const host = process.env.DB_HOST;
+    const host = process.env.POSTGRES_HOST ?? process.env.DB_HOST;
     if (!host) return undefined;
-    const user = process.env.DB_USER ?? "";
-    const database = process.env.DB_NAME ?? process.env.DB_DATABASE ?? "";
+    const user = process.env.POSTGRES_USER ?? process.env.DB_USER ?? "";
+    const database =
+        process.env.POSTGRES_DB ??
+        process.env.DB_NAME ??
+        process.env.DB_DATABASE ??
+        "";
     if (!database) return undefined;
-    const portRaw = process.env.DB_PORT;
+    const portRaw = process.env.POSTGRES_PORT ?? process.env.DB_PORT;
     const port = portRaw ? Number(portRaw) : DEFAULT_DB_PORT;
+    const password = process.env.POSTGRES_PASSWORD ?? process.env.DB_PASSWORD;
     return {
         type: "params",
         host,
         port: Number.isNaN(port) ? DEFAULT_DB_PORT : port,
         database,
         user,
-        password: process.env.DB_PASSWORD,
+        password,
     };
 }
 
