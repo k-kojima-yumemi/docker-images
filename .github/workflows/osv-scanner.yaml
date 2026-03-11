@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - run: docker run --rm rhysd/actionlint:latest -version
       - run: docker run --rm -v "$(pwd):/repo" --workdir /repo rhysd/actionlint:latest -color
 
