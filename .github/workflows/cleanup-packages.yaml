@@ -23,7 +23,7 @@ jobs:
             cut -d'/' -f1 | \
             sort -u | \
             jq -R -s -c 'split("\n") | map(select(. != ""))')
-          echo "package-names=$PACKAGE_NAMES" >> $GITHUB_OUTPUT
+          echo "package-names=$PACKAGE_NAMES" >> "$GITHUB_OUTPUT"
           echo "Found package names: $PACKAGE_NAMES"
 
   cleanup:
@@ -44,5 +44,7 @@ jobs:
           min-versions-to-keep: 10
           delete-only-untagged-versions: true
       - name: Validate image tag exists
-        run: docker manifest inspect ghcr.io/${{ github.repository_owner }}/${{ matrix.package-name }}:latest
-
+        run: docker manifest inspect "ghcr.io/${REPOSITORY_OWNER}/${PACKAGE_NAME}:latest"
+        env:
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          PACKAGE_NAME: ${{ matrix.package-name }}
