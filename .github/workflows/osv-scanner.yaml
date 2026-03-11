@@ -37,3 +37,14 @@ jobs:
       - uses: actions/checkout@v5
       - run: docker run --rm rhysd/actionlint:latest -version
       - run: docker run --rm -v "$(pwd):/repo" --workdir /repo rhysd/actionlint:latest -color
+
+  renovate-check:
+    runs-on: ubuntu-slim
+    timeout-minutes: 1
+    permissions: {}
+    needs:
+      - scan-pr
+      - workflow-lint
+    if: ${{ github.event_name == 'pull_request' && (cancelled() || failure()) }}
+    steps:
+      - run: 'false'
