@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl ca-certifi
 
 WORKDIR /root
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -m).zip" -o "aws_cli2.zip"
-RUN unzip "aws_cli2.zip" >/dev/null && echo 'Unziped aws_cli2.zip'
+RUN unzip "aws_cli2.zip" >/dev/null && echo 'Unzipped aws_cli2.zip'
 RUN ./aws/install --bin-dir /usr/local/aws-cli-bin --install-dir /usr/local/aws-cli
 
 FROM ubuntu:24.04
@@ -44,5 +44,18 @@ COPY --from=cli /usr/local/aws-cli-bin /usr/local/aws-cli-bin
 ENV PATH=/usr/local/aws-cli-bin:$PATH
 RUN aws --version
 
+# Install AWS Session Manager Plugin
+RUN <<EOF
+case $(uname -m) in
+  x86_64)  ARCH="ubuntu_64bit" ;;
+  aarch64) ARCH="ubuntu_arm64" ;;
+  *)       echo "Unsupported architecture: $(uname -m)"; exit 1 ;;
+esac
+curl "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/${ARCH}/session-manager-plugin.deb" -o "session-manager-plugin.deb"
+dpkg -i session-manager-plugin.deb
+rm session-manager-plugin.deb
+session-manager-plugin
+EOF
+
 LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
-LABEL org.opencontainers.image.description="An image with Terraform and AWS CLI"
+LABEL org.opencontainers.image.description="An image with Terraform, AWS CLI, and Session Manager Plugin"
