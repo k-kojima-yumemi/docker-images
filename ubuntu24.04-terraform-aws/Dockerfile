@@ -42,6 +42,7 @@ ENV TF_PLUGIN_CACHE_DIR=/terraform-cache
 COPY --from=cli /usr/local/aws-cli /usr/local/aws-cli
 COPY --from=cli /usr/local/aws-cli-bin /usr/local/aws-cli-bin
 ENV PATH=/usr/local/aws-cli-bin:$PATH
+ENV AWS_PAGER=""
 RUN aws --version
 
 # Install AWS Session Manager Plugin
