@@ -26,12 +26,12 @@ jobs:
         working-directory: 'postgres-health-check/ts'
     steps:
       - uses: 'actions/checkout@v6'
-      - run: docker compose up -d database
-      - run: docker compose run --rm app npm ci
-      - run: docker compose run --rm app npm run ci
-      - run: docker compose run --rm app npm run build
+      - run: docker compose -f compose.yaml -f compose.ci.yaml up -d database
+      - run: docker compose -f compose.yaml -f compose.ci.yaml run --rm app npm ci
+      - run: docker compose -f compose.yaml -f compose.ci.yaml run --rm app npm run ci
+      - run: docker compose -f compose.yaml -f compose.ci.yaml run --rm app npm run build
       - name: Run test
-        run: docker compose run --rm app npm test
+        run: docker compose -f compose.yaml -f compose.ci.yaml run --rm app npm test
 
   build:
     runs-on: ubuntu-latest

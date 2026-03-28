@@ -1,0 +1,5 @@
+services:
+  app:
+    image: node:24
+  database:
+    image: postgres:18
