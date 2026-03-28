@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "module": "Preserve",
+    "moduleResolution": "bundler",
     "strict": true,
     "skipLibCheck": true,
     "types": ["node"],
-    "outDir": "./dist",
+    "noEmit": true,
     "erasableSyntaxOnly": true
   },
   "exclude": ["node_modules"]
