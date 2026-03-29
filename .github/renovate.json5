@@ -6,6 +6,7 @@
     ":prHourlyLimitNone",
     ":timezone(Asia/Tokyo)",
   ],
+  "minimumReleaseAge": "3 days",
   "packageRules": [
     {
       "matchManagers": [
