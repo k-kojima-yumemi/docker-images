@@ -1,0 +1,49 @@
+# Base stage for build and dependencies
+FROM public.ecr.aws/docker/library/node:24-slim AS base
+# Copy package files
+COPY package*.json tsconfig.json /app/
+
+# Build stage
+FROM base AS builder
+# Set working directory
+WORKDIR /app
+# Install all dependencies (including devDependencies for build)
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
+# Copy source code
+COPY . .
+# Build the application
+RUN npm run build
+
+# Dependencies stage
+FROM base AS deps
+# Set working directory
+WORKDIR /app
+# Install prod dependencies
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci --omit=dev
+
+# Runtime stage
+FROM gcr.io/distroless/nodejs24-debian12:nonroot AS runtime
+# Set working directory
+WORKDIR /app
+# Copy AWS Lambda Web Adapter
+COPY --from=public.ecr.aws/awsguru/aws-lambda-adapter:1.0.0 --chown=nonroot:nonroot /lambda-adapter /opt/extensions/lambda-adapter
+# Copy package.json and dependencies for runtime
+COPY --chown=nonroot:nonroot package.json /app/package.json
+# OTel requires node_modules at runtime (dynamic require for auto-instrumentation)
+COPY --from=deps --chown=nonroot:nonroot /app/node_modules /app/node_modules
+# Copy built application
+COPY --from=builder --chown=nonroot:nonroot /app/dist /app/dist
+
+# Set environment variables for Lambda
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV LOG_LEVEL=info
+ENV OTEL_SERVICE_NAME=hono-otel-template
+# Expose port (for documentation purposes)
+EXPOSE 8080
+LABEL org.opencontainers.image.source="https://github.com/k-kojima-yumemi/docker-images"
+LABEL org.opencontainers.image.description="An image with Hono OpenTelemetry template"
+# Start the server
+CMD ["dist/index.cjs"]
