@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "ecs-initial-image ",
+  "name": "ecs-initial-image",
   "version": "1.0.0",
   "scripts": {
     "format": "biome check --write --unsafe",
