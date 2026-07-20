@@ -33,7 +33,7 @@ describe("App", () => {
         const response = await app.request("/openapi.json");
         expect(response.status).toBe(200);
         const data = await response.json();
-        expect(data).toHaveProperty("openapi", "3.0.3");
+        expect(data).toHaveProperty("openapi", "3.1.0");
         expect(data).toHaveProperty("paths");
         expect(data.paths).toHaveProperty("/health");
         expect(data.paths).toHaveProperty("/products");

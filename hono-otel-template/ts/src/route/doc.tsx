@@ -10,7 +10,7 @@ export function defineDocRoutes(app: Hono<HonoContext>) {
             app,
             {
                 documentation: {
-                    openapi: "3.0.3",
+                    openapi: "3.1.0",
                     info: {
                         title: "Product Estimation API",
                         version: "1.0",
