@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import { CurrencySchema } from "./products";
 
 const EstimateOptionsObject = v.pipe(
     v.object({
@@ -19,7 +20,7 @@ export const EstimateBodySchema = v.pipe(
             v.minValue(1),
             v.maxValue(10000),
         ),
-        currency: v.optional(v.picklist(["USD", "EUR", "JPY"] as const), "USD"),
+        currency: v.optional(CurrencySchema, "USD"),
         options: EstimateOptionsSchema,
     }),
     v.metadata({ ref: "EstimateBody" }),

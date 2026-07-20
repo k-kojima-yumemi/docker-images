@@ -1,10 +1,9 @@
 import * as v from "valibot";
+import { CategorySchema, CurrencySchema } from "./products";
 
 export const SummaryQuerySchema = v.object({
-    category: v.optional(
-        v.picklist(["electronics", "clothing", "food"] as const),
-    ),
-    currency: v.optional(v.picklist(["USD", "EUR", "JPY"] as const)),
+    category: v.optional(CategorySchema),
+    currency: v.optional(CurrencySchema),
 });
 
 const CategoryStatsSchema = v.pipe(
