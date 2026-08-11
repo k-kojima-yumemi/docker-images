@@ -11,6 +11,7 @@ describe("Hono Application Tests", () => {
     delete process.env.RESPONSE_CONTENT;
     delete process.env.RESPONSE_STATUS;
     delete process.env.RESPONSE_CONTENT_TYPE;
+    delete process.env.ENABLE_REQUEST_INSPECTOR;
   });
 
   afterEach(() => {
@@ -98,4 +99,76 @@ describe("Hono Application Tests", () => {
       expect(await res.text()).toBe("Hello World");
     },
   );
+});
+
+describe("Request Inspector Endpoint", () => {
+  let originalEnv;
+
+  beforeEach(() => {
+    originalEnv = { ...process.env };
+    delete process.env.RESPONSE_CONTENT;
+    delete process.env.RESPONSE_STATUS;
+    delete process.env.RESPONSE_CONTENT_TYPE;
+    delete process.env.ENABLE_REQUEST_INSPECTOR;
+  });
+
+  afterEach(() => {
+    process.env = originalEnv;
+  });
+
+  it("should fall back to the default response when ENABLE_REQUEST_INSPECTOR is not set", async () => {
+    const res = await app.request("http://localhost/__debug/request");
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toBe("text/plain");
+    expect(await res.text()).toBe("Hello World");
+  });
+
+  it("should fall back to the default response when ENABLE_REQUEST_INSPECTOR is falsy", async () => {
+    process.env.ENABLE_REQUEST_INSPECTOR = "false";
+
+    const res = await app.request("http://localhost/__debug/request");
+
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("Hello World");
+  });
+
+  it("should echo the request when ENABLE_REQUEST_INSPECTOR is true", async () => {
+    process.env.ENABLE_REQUEST_INSPECTOR = "true";
+
+    const res = await app.request("http://localhost/__debug/request?foo=bar", {
+      method: "POST",
+      headers: { "X-Custom-Header": "custom-value" },
+      body: "hello",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toBe("application/json");
+
+    const body = await res.json();
+    expect(body.method).toBe("POST");
+    expect(body.path).toBe("/__debug/request");
+    expect(body.query).toEqual({ foo: "bar" });
+    expect(body.headers["x-custom-header"]).toBe("custom-value");
+    expect(body.body).toBe("hello");
+  });
+
+  it("should be case-insensitive for ENABLE_REQUEST_INSPECTOR value", async () => {
+    process.env.ENABLE_REQUEST_INSPECTOR = "TRUE";
+
+    const res = await app.request("http://localhost/__debug/request");
+    const body = await res.json();
+
+    expect(body.method).toBe("GET");
+    expect(body.path).toBe("/__debug/request");
+  });
+
+  it("should not affect other paths when ENABLE_REQUEST_INSPECTOR is true", async () => {
+    process.env.ENABLE_REQUEST_INSPECTOR = "true";
+
+    const res = await app.request("http://localhost/some/other/path");
+
+    expect(res.status).toBe(200);
+    expect(await res.text()).toBe("Hello World");
+  });
 });
