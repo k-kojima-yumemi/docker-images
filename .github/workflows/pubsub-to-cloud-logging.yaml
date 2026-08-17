@@ -1,0 +1,75 @@
+name: pubsub-to-cloud-logging
+on:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - '.github/workflows/pubsub-to-cloud-logging.yaml'
+      - 'pubsub-to-cloud-logging/**'
+  pull_request:
+    paths:
+      - '.github/workflows/pubsub-to-cloud-logging.yaml'
+      - 'pubsub-to-cloud-logging/**'
+
+env:
+  DOCKER_BUILD_SUMMARY: false
+  DOCKER_BUILD_RECORD_UPLOAD: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: 'pubsub-to-cloud-logging'
+    steps:
+      - uses: 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' # v7.0.1
+      - uses: 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' # v7.0.0
+        with:
+          go-version-file: pubsub-to-cloud-logging/go.mod
+      - run: test -z "$(gofmt -l .)" || { gofmt -d .; exit 1; }
+      - run: go vet ./...
+      - run: go test -v -race ./...
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: 'actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1' # v7.0.1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Log into registry ghcr.io
+        if: ${{ github.event_name == 'push' }}
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and Push
+        uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
+        with:
+          push: ${{ github.event_name == 'push' }}
+          tags: ghcr.io/k-kojima-yumemi/pubsub-to-cloud-logging:latest
+          platforms: linux/amd64,linux/arm64
+          context: 'pubsub-to-cloud-logging'
+          file: 'pubsub-to-cloud-logging/Dockerfile'
+
+  renovate-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    permissions: {}
+    needs:
+      - test
+      - build
+    # See https://docs.github.com/en/actions/writing-workflows/choosing-what-your-workflow-does/accessing-contextual-information-about-workflow-runs#needs-context for result values
+    if: ${{ cancelled() || failure() }}
+    steps:
+      - run: 'false'
+
+    
