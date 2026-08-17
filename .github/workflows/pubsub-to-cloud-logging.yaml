@@ -29,6 +29,7 @@ jobs:
       - uses: 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' # v7.0.0
         with:
           go-version-file: pubsub-to-cloud-logging/go.mod
+          cache: false
       - run: test -z "$(gofmt -l .)" || { gofmt -d .; exit 1; }
       - run: go vet ./...
       - run: go test -v -race ./...
