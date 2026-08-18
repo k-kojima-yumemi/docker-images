@@ -32,9 +32,9 @@ func TestLogMiddleware(t *testing.T) {
 		{
 			name:      "implicit 200 when WriteHeader not called",
 			method:    "GET",
-			path:      "/healthz",
+			path:      "/health-check",
 			innerCode: 0,
-			wantInLog: []string{"GET", "/healthz", "200"},
+			wantInLog: []string{"GET", "/health-check", "200"},
 		},
 	}
 

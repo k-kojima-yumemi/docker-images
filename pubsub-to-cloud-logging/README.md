@@ -11,7 +11,7 @@ The payload is passed through unmodified. This service has no knowledge of the m
 | Method | Path | Description |
 |--------|------|-------------|
 | POST | `/` | Pub/Sub push endpoint. Writes the message to stdout as one JSON line. |
-| GET | `/healthz` | Liveness. Does not depend on anything external. |
+| GET | `/health-check` | Liveness. Does not depend on anything external. |
 
 ### POST /
 
@@ -22,11 +22,11 @@ Expects a [Pub/Sub push request body](https://docs.cloud.google.com/pubsub/docs/
 
 Configure a dead-letter topic on the subscription to catch messages that fail repeatedly.
 
-### GET /healthz
+### GET /health-check
 
 - 200: `{"status": "ok", "version": "<build version>", "uptimeSeconds": <int>}`
 
-Cloud Run does not call this by default; its built-in startup check only waits for the port to open. Set `--liveness-probe httpGet.path=/healthz` if you want it used.
+Cloud Run does not call this by default; its built-in startup check only waits for the port to open. Set `--liveness-probe httpGet.path=/health-check` if you want it used.
 
 ## Environment variables
 

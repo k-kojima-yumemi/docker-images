@@ -200,7 +200,7 @@ func main() {
 	logger := log.New(os.Stderr, "", log.LstdFlags)
 	mux := http.NewServeMux()
 	mux.Handle("POST /", h)
-	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
+	mux.HandleFunc("GET /health-check", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Cache-Control", "no-store")
 		w.WriteHeader(http.StatusOK)
