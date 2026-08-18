@@ -83,6 +83,52 @@ type handler struct {
 	mu  sync.Mutex
 }
 
+// responseRecorder captures the HTTP status code set by a handler.
+type responseRecorder struct {
+	http.ResponseWriter
+	status int
+	wrote  bool
+}
+
+func (r *responseRecorder) WriteHeader(code int) {
+	if !r.wrote {
+		r.status = code
+		r.wrote = true
+	}
+	r.ResponseWriter.WriteHeader(code)
+}
+
+func (r *responseRecorder) Write(b []byte) (int, error) {
+	if !r.wrote {
+		r.WriteHeader(http.StatusOK)
+	}
+	return r.ResponseWriter.Write(b)
+}
+
+func (r *responseRecorder) statusCode() int {
+	if r.status == 0 {
+		return http.StatusOK
+	}
+	return r.status
+}
+
+func logMiddleware(logger *log.Logger, next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		rec := &responseRecorder{ResponseWriter: w}
+		next.ServeHTTP(rec, r)
+		logger.Printf("method=%s path=%s status=%d remote=%s", r.Method, r.URL.Path, rec.statusCode(), r.RemoteAddr)
+	})
+}
+
+func notFoundHandler(logger *log.Logger) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		body, _ := io.ReadAll(io.LimitReader(r.Body, 1024))
+		logger.Printf("unhandled method=%s path=%s contentType=%q bodySnippet=%q remote=%s",
+			r.Method, r.URL.Path, r.Header.Get("Content-Type"), string(body), r.RemoteAddr)
+		http.NotFound(w, r)
+	}
+}
+
 func (h *handler) severityFor(attrs map[string]string) string {
 	if h.cfg.severityAttr == "" {
 		return h.cfg.severity
@@ -151,6 +197,7 @@ func (h *handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	h := &handler{cfg: loadConfig(), out: os.Stdout}
+	logger := log.New(os.Stderr, "", log.LstdFlags)
 	mux := http.NewServeMux()
 	mux.Handle("POST /", h)
 	mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, _ *http.Request) {
@@ -159,5 +206,6 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		io.WriteString(w, `{"status":"ok"}`)
 	})
-	log.Fatal(http.ListenAndServe(":"+envOr("PORT", "8080"), mux))
+	mux.HandleFunc("/", notFoundHandler(logger))
+	log.Fatal(http.ListenAndServe(":"+envOr("PORT", "8080"), logMiddleware(logger, mux)))
 }
