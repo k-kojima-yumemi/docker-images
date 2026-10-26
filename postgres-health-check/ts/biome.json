@@ -11,7 +11,13 @@
       "!**/dist"
     ]
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "linter": {
     "enabled": true,
     "rules": {
@@ -21,17 +27,23 @@
         "noUnusedVariables": "error",
         "noUnusedFunctionParameters": "error"
       },
-      "suspicious": { "noReactSpecificProps": "error" },
+      "suspicious": {
+        "noReactSpecificProps": "error"
+      },
       "style": {
         "noNamespace": "error",
         "noYodaExpression": "error",
         "useConsistentArrayType": {
           "level": "error",
-          "options": { "syntax": "shorthand" }
+          "options": {
+            "syntax": "shorthand"
+          }
         },
         "useNamingConvention": {
           "level": "error",
-          "options": { "requireAscii": true }
+          "options": {
+            "requireAscii": true
+          }
         },
         "useLiteralEnumMembers": "error",
         "useNodejsImportProtocol": "error",
@@ -53,15 +65,27 @@
         "noUselessElse": "error",
         "useShorthandFunctionType": "error"
       },
-      "nursery": { "useSortedClasses": "error" },
+      "nursery": {
+        "useTailwindSortedClasses": "error"
+      },
       "complexity": {
         "noCommaOperator": "error",
         "useNumericLiterals": "error",
         "noArguments": "error"
       },
-      "performance": { "noAwaitInLoops": "error" }
+      "performance": {
+        "noAwaitInLoops": "error"
+      }
     }
   },
-  "formatter": { "indentStyle": "space", "indentWidth": 4 },
-  "json": { "formatter": { "indentStyle": "space", "indentWidth": 2 } }
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 4
+  },
+  "json": {
+    "formatter": {
+      "indentStyle": "space",
+      "indentWidth": 2
+    }
+  }
 }
