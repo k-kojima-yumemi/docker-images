@@ -1,3 +1,3 @@
 module pubsub-to-cloud-logging
 
-go 1.26.6
+go 1.27
