@@ -9,7 +9,7 @@
     "test": "vitest run"
   },
   "volta": {
-    "node": "24.22.1"
+    "node": "24.22.2"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.0",
