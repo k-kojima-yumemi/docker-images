@@ -5,7 +5,7 @@
     "format": "biome check --write --unsafe",
     "ci": "biome ci && tsc --noEmit",
     "dev": "tsx watch src/index.ts",
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.cjs --external:@opentelemetry/* --external:@hono/standard-validator --external:@standard-community/*",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node26 --outfile=dist/index.cjs --external:@opentelemetry/* --external:@hono/standard-validator --external:@standard-community/*",
     "test": "vitest run"
   },
   "volta": {

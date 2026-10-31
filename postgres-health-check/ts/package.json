@@ -5,7 +5,7 @@
     "format": "biome check --write --unsafe",
     "ci": "biome ci && tsc --noEmit",
     "dev": "tsx watch src/index.ts",
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node22 --outfile=dist/index.cjs",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node26 --outfile=dist/index.cjs",
     "test": "vitest run"
   },
   "dependencies": {
