@@ -1,5 +1,5 @@
 # Base stage for build and dependencies
-FROM public.ecr.aws/docker/library/node:24-slim AS base
+FROM public.ecr.aws/docker/library/node:26-slim AS base
 # Copy package files
 COPY package*.json /app/
 
@@ -12,7 +12,7 @@ RUN --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
 # Runtime stage
-FROM gcr.io/distroless/nodejs24-debian12:nonroot AS runtime
+FROM gcr.io/distroless/nodejs26-debian13:nonroot AS runtime
 # Set working directory
 WORKDIR /app
 # Copy AWS Lambda Web Adapter

@@ -5,11 +5,11 @@
     "format": "biome check --write --unsafe",
     "ci": "biome ci && tsc --noEmit",
     "dev": "tsx watch src/index.ts",
-    "build": "esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.cjs --external:@opentelemetry/* --external:@hono/standard-validator --external:@standard-community/*",
+    "build": "esbuild src/index.ts --bundle --platform=node --target=node26 --outfile=dist/index.cjs --external:@opentelemetry/* --external:@hono/standard-validator --external:@standard-community/*",
     "test": "vitest run"
   },
   "volta": {
-    "node": "24.22.2"
+    "node": "26.13.0"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.0",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.3",
-    "@types/node": "^24.12.2",
+    "@types/node": "^26.0.0",
     "esbuild": "^0.28.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
