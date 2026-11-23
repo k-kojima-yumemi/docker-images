@@ -2,4 +2,4 @@ services:
   app:
     image: node:26
   database:
-    image: postgres:18
+    image: postgres:19
